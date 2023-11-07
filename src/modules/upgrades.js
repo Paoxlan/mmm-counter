@@ -165,7 +165,7 @@ const upgrades = {
                 1000
             ],
             effect: function (value, user) {
-                return value + Math.floor(user.getMMM() / 1000);
+                return value + Math.floor(user.getCount() / 1000);
             }
         }
     ],
