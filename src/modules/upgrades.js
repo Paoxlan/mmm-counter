@@ -211,7 +211,7 @@ module.exports = {
         }
 
         buy(user) {
-            const cost = this.getCost();
+            const cost = this.getCost(user);
             const mmms = user.getMMM();
 
             if (mmms < cost) return false;

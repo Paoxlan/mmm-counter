@@ -53,7 +53,7 @@ function updateComponents(index, upgrades, user) {
 
     if (index === 0) leftButton.setDisabled(true);
     if (index === upgrades.length - 1) rightButton.setDisabled(true);
-    if (upgrade.getCost() > user.getMMM()) payButton.setDisabled(true);
+    if (upgrade.getCost(user) > user.getMMM()) payButton.setDisabled(true);
 
     return new ActionRowBuilder().addComponents([leftButton, payButton, rightButton]);
 }
