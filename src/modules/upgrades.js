@@ -185,9 +185,8 @@ module.exports = {
         getName = () => this.name;
         getDescription = () => this.description;
         getCost = (user) => {
-            if (user)
-                if (this.getUpgradeCost) return this.getUpgradeCost(user);
-            
+            if (user && this.getUpgradeCost)
+                return this.getUpgradeCost(user);
 
             return this.cost;
         }

@@ -61,12 +61,12 @@ function updateComponents(index, upgrades, user) {
 function createShopEmbed(embed, index, upgrades, user, content = '') {
     user = Users.getUser(user.getUserId()); // Refresh user
 
-    const upgrade = upgrades[index];
+    const upgrade = upgrades[index] ? Upgrades.getUpgrade(upgrades[index].id) : null;
     const nextUpgrade = upgrades[index + 1];
     const previousUpgrade = upgrades[index - 1];
 
     embed.setTitle(upgrade ? upgrade.name : 'Shop');
-    if (upgrade) embed.setDescription(`${upgrade.description}\n\nCost: ${upgrade.cost}\nYou have: ${user.getMMM()} mmms${content ? `\n\n${content}` : ''}`);
+    if (upgrade) embed.setDescription(`${upgrade.getDescription()}\n\nCost: ${upgrade.getCost(user)}\nYou have: ${user.getMMM()} mmms${content ? `\n\n${content}` : ''}`);
     else {
         embed.setDescription('You have all upgrades!')
         if (previousUpgrade) return createShopEmbed(embed, index - 1, upgrades, user, content);
@@ -103,25 +103,9 @@ function shopListEmbed(embed, user, availableUpgrades, upgrades) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('shop')
-        .setDescription('Opens the shop.')
-        .addStringOption(option => 
-            option.setName('method')
-            .setDescription('The method to use in the shop.')
-            .setRequired(false)
-            .addChoices(
-                { name: 'buy', value: 'buy' },
-                { name: 'list', value: 'list' }
-            )
-        )
-        .addIntegerOption(option =>
-            option.setName('id')
-            .setDescription('The ID of the upgrade to buy.')
-            .setRequired(false)    
-        ),
-
+        .setDescription('Opens the shop.'),
     async execute(interaction) {
         const user = Users.getUser(interaction.user.id);
-        const method = interaction.options.getString('method');
         const embed = createEmbed(interaction.user);
 
         if (!user) {
@@ -132,97 +116,66 @@ module.exports = {
         const upgrades = Upgrades.getUpgrades();
         let availableUpgrades = getAvailableUpgrades(upgrades, user.getUpgrades());
 
-        if (!method) {
-            let index = 0;
+        let index = 0;
+        
+        const shopEmbed = createShopEmbed(embed, index, availableUpgrades, user);
+        let message = await interaction.reply({
+            embeds: shopEmbed.embed,
+            components: shopEmbed.components,
+            fetchReply: true
+        });
+    
+        const collectorFilter = (i) => {
+            i.deferUpdate();
+            return i.user.id === user.getUserId();
+        }
+    
+        const collector = message.createMessageComponentCollector({
+            filter: collectorFilter,
+            componentType: ComponentType.Button,
+            time: 75_000
+        });
+    
+        collector.on('collect', async function (i) {
+            let content;
+            if (i.customId === 'left') {
+                if (index <= 0) return;
+                index -= 1;
+            }
+            if (i.customId === 'right') {
+                if (index >= availableUpgrades.length - 1) return;
+                index += 1;
+            }
+            if (i.customId === 'pay') {
+                if (!availableUpgrades[index]) return;
+                const upgrade = Upgrades.getUpgrade(availableUpgrades[index].id);
+                const boughtUpgrade = upgrade.buy(user);
             
-            const shopEmbed = createShopEmbed(embed, index, availableUpgrades, user);
-            let message = await interaction.reply({
-                embeds: shopEmbed.embed,
-                components: shopEmbed.components,
-                fetchReply: true
-            });
-
-            const collectorFilter = (i) => {
-                i.deferUpdate();
-                return i.user.id === user.getUserId();
+                if (!boughtUpgrade)
+                    content = `You don't have enough mmm coins to buy this upgrade.`;
+                else
+                    content = `You succesfully bought ${boughtUpgrade.getName()}!`;
+            
+                availableUpgrades = getAvailableUpgrades(upgrades, user.getUpgrades());
             }
-
-            const collector = message.createMessageComponentCollector({
-                filter: collectorFilter,
-                componentType: ComponentType.Button,
-                time: 75_000
+        
+            const updatedEmbed = createShopEmbed(embed, index, availableUpgrades, user, content);
+            message = await message.edit({
+                embeds: updatedEmbed.embed,
+                components: updatedEmbed.components
             });
-
-            collector.on('collect', async function (i) {
-                let content;
-                if (i.customId === 'left') {
-                    if (index <= 0) return;
-                    index -= 1;
-                }
-                if (i.customId === 'right') {
-                    if (index >= availableUpgrades.length - 1) return;
-                    index += 1;
-                }
-                if (i.customId === 'pay') {
-                    if (!availableUpgrades[index]) return;
-                    const upgrade = Upgrades.getUpgrade(availableUpgrades[index].id);
-                    const boughtUpgrade = upgrade.buy(user);
-
-                    if (!boughtUpgrade)
-                        content = `You don't have enough mmm coins to buy this upgrade.`;
-                    else
-                        content = `You succesfully bought ${boughtUpgrade.getName()}!`;
-
-                    availableUpgrades = getAvailableUpgrades(upgrades, user.getUpgrades());
-                }
-
-                const updatedEmbed = createShopEmbed(embed, index, availableUpgrades, user, content);
-                message = await message.edit({
-                    embeds: updatedEmbed.embed,
-                    components: updatedEmbed.components
-                });
-                
-                index = updatedEmbed.index;
-            });
-
-            collector.on('end', async function (i) {
-                message.edit({ content: 'Session ended.', components: []})
-                    .catch(() => console.log('Message is already deleted.'));
-
-                await delay(5_000);
-
-                message.delete()
-                    .catch(() => console.log('Message is already deleted.'));
-            });
-
-            return;
-        }
-        if (method === 'list') {
-            await interaction.reply({ embeds: [shopListEmbed(embed, user, availableUpgrades, upgrades)], ephemeral: true });
-            return;
-        }
-        if (method === 'buy') {
-            const id = interaction.options.getInteger('id');
-            if (!id && id !== 0) {
-                await interaction.reply({ content: 'You must specify an upgrade ID.', ephemeral: true });
-                return;
-            }
-
-            const idUpgrade = availableUpgrades.find(upgrade => upgrade.id === id);
-
-            if (!idUpgrade) {
-                await interaction.reply({ content: `Invalid upgrade ID or the upgrade isn't unlocked yet.`, ephemeral: true });
-                return;
-            }
-            const upgrade = Upgrades.getUpgrade(idUpgrade.id);
-
-            const boughtUpgrade = upgrade.buy(user);
-            if (!boughtUpgrade) {
-                await interaction.reply({ content: `You don't have enough mmm coins to buy this upgrade.\n\nAmount: ${user.mmms}\nRequired: ${upgrade.cost}`, ephemeral: true });
-                return;
-            }
-
-            await interaction.reply({ content: `You succesfully bought ${boughtUpgrade.getName()}!`})
-        }
+            
+            index = updatedEmbed.index;
+        });
+    
+        collector.on('end', async function (i) {
+            message.edit({ content: 'Session ended.', components: []})
+                .catch(() => console.log('Message is already deleted.'));
+        
+            await delay(5_000);
+        
+            message.delete()
+                .catch(() => console.log('Message is already deleted.'));
+        });
     }
 }
