@@ -6,7 +6,8 @@ module.exports = {
             const data = fs.readFileSync(path, 'utf8');
             return JSON.parse(data);
         } catch (err) {
-            console.error(err);
+            fs.writeFileSync(path, '[]');
+            return [];
         }
     }
 }
