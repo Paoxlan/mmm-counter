@@ -9,7 +9,7 @@ const upgrades = {
         {
             id: 1,
             name: "Starter MMMer",
-            description: `Adds 1 extra mmm currency every "mmm".\n"mmmm"`,
+            description: `Adds 1 extra mmm coin every "mmm".\n"mmmm"`,
             cost: 25,
             effect: function (value) {
                 return value + 1;
@@ -18,7 +18,7 @@ const upgrades = {
         {
             id: 2,
             name: "MMMer",
-            description: `Adds 1 extra mmm currency every "mmm".\n"mmmmm"`,
+            description: `Adds 1 extra mmm coin every "mmm".\n"mmmmm"`,
             cost: 100,
             requirements: [
                 1
@@ -30,7 +30,7 @@ const upgrades = {
         {
             id: 3,
             name: "MMMer II",
-            description: `Adds 1 extra mmm currency every "mmm".\n"mmmmmm"`,
+            description: `Adds 1 extra mmm coin every "mmm".\n"mmmmmm"`,
             cost: 333,
             requirements: [
                 2
@@ -42,7 +42,7 @@ const upgrades = {
         {
             id: 500,
             name: "Financial Advisor",
-            description: `Gain 25% more mmm currency for every "mmm".`,
+            description: `Gain 25% more mmm coins for every "mmm".`,
             cost: 685,
             requirements: [
                 1
@@ -74,7 +74,7 @@ const upgrades = {
         {
             id: 900,
             name: "Inner Thoughts",
-            description: `Passively gain 2 mmm currency every 5 seconds.\nWarning: This upgrade will get unequipped if you say "mmm".\n""mmm""`,
+            description: `Passively gain 2 mmm coins every 5 seconds.\nWarning: This upgrade will get unequipped if you say "mmm".\n""mmm""`,
             cost: 1000,
             hasSpoken: false,
             hasOnEquip: true,
@@ -98,7 +98,7 @@ const upgrades = {
         {
             id: 901,
             name: "Office Worker",
-            description: `Passively gain 1 mmm currency every 20 seconds.\n"we need to talk about your mps reports"`,
+            description: `Passively gain 1 mmm coin every 20 seconds.\n"we need to talk about your mps reports"`,
             cost: 500,
             hasOnEquip: true,
             requirements: [
@@ -115,7 +115,7 @@ const upgrades = {
         {
             id: 902,
             name: "Office Worker II",
-            description: `Passively gain 2 mmm currency every 20 seconds.\n"Do we really need to talk about your mps reports?"`,
+            description: `Passively gain 2 mmm coins every 20 seconds.\n"Do we really need to talk about your mps reports?"`,
             cost: 1000,
             hasOnEquip: true,
             requirements: [
