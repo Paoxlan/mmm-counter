@@ -40,7 +40,6 @@ client.on(Events.InteractionCreate, async function (interaction) {
 
 client.on(Events.MessageCreate, async function (message) {
 	if (message.author.bot) return;
-    if (message.guildId !== process.env.GUILD_ID) return;
     if (!MMM.isMMM(message)) return;
     
     MMM.updateUser(message);
