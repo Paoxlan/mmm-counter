@@ -169,7 +169,7 @@ module.exports = {
                     const boughtUpgrade = upgrade.buy(user);
 
                     if (!boughtUpgrade)
-                        content = `You don't have enough mmm currency to buy this upgrade.`;
+                        content = `You don't have enough mmm coins to buy this upgrade.`;
                     else
                         content = `You succesfully bought ${boughtUpgrade.getName()}!`;
 
@@ -218,7 +218,7 @@ module.exports = {
 
             const boughtUpgrade = upgrade.buy(user);
             if (!boughtUpgrade) {
-                await interaction.reply({ content: `You don't have enough MMM currency to buy this upgrade.\n\nAmount: ${user.mmms}\nRequired: ${upgrade.cost}`, ephemeral: true });
+                await interaction.reply({ content: `You don't have enough mmm coins to buy this upgrade.\n\nAmount: ${user.mmms}\nRequired: ${upgrade.cost}`, ephemeral: true });
                 return;
             }
 
