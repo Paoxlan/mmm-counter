@@ -75,7 +75,10 @@ const upgrades = {
             id: 900,
             name: "Inner Thoughts",
             description: `Passively gain 2 mmm coins every 5 seconds.\nWarning: This upgrade will get unequipped if you say "mmm".\n""mmm""`,
-            cost: 1000,
+            getUpgradeCost: function (user) {
+                const costScale = user.getMMM() - 1000;
+                return 1000 + Math.ceil(costScale > 0 ? costScale / 100 * 25 : 0);
+            },
             hasSpoken: false,
             hasOnEquip: true,
             onEquip: async function (user) {
@@ -181,7 +184,13 @@ module.exports = {
         getId = () => this.id;
         getName = () => this.name;
         getDescription = () => this.description;
-        getCost = () => this.cost;
+        getCost = (user) => {
+            if (user)
+                if (this.getUpgradeCost) return this.getUpgradeCost(user);
+            
+
+            return this.cost;
+        }
         getEffect = () => this.effect;
         getEtc = () => {
             const etc = {};
