@@ -16,6 +16,8 @@ This bot uses discord.js.
 ## Contributing
 Contributions are welcome, but don't expect me to react quickly as this project was made as a joke and I don't plan on working on it much.
 
+**New features need to be discussed in an issue first. Bug fixes can be done without an issue.**
+
 ## Download
 1. Clone the repository
 2. run `npm install`
