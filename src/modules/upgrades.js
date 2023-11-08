@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const { Users } = require('./users.js');
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));

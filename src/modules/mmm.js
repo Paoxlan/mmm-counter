@@ -1,8 +1,5 @@
-const fs = require('fs');
-const path = require('path');
 const { Users } = require('./users.js');
 const { Upgrades } = require('./upgrades.js');
-const jsonHelpers = require('./json-helpers.js');
 
 // Variables //
 const pow = 1.75;
