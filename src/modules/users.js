@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const jsonHelpers = require('./json-helpers.js');
 
 module.exports = {
     Users: class Users {
@@ -78,7 +77,13 @@ module.exports = {
         }
 
         static userJSONPath = path.join(__dirname, '..', 'data', 'users.json');
-        static getUsersJSON = () => jsonHelpers.readJSON(Users.userJSONPath);
+        static getUsersJSON() {
+            if (!fs.existsSync(Users.userJSONPath)) fs.writeFileSync(Users.userJSONPath, '[]');
+            
+            const data = fs.readFileSync(Users.userJSONPath, 'utf8');
+
+            return JSON.parse(data);
+        } 
 
         static createUser(id) {
             const users = this.getUsersJSON();

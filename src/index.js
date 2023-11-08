@@ -24,6 +24,10 @@ const client = new Client({
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 
+// Data //
+const dataPath = path.join(__dirname, 'data');
+if (!fs.existsSync(dataPath)) fs.mkdirSync(dataPath);
+
 // Events //
 client.on(Events.ClientReady, function () {
     console.log(`Bot is ready!`);
