@@ -12,7 +12,7 @@ module.exports = {
 
         const userArray = Users.getUsersJSON();
 
-        if (!userArray) return await interaction.reply({ content: "No users were found.", ephemeral: true });
+        if (!userArray.length) return await interaction.reply({ content: "No users were found.", ephemeral: true });
 
         const sortedUserArray = userArray.sort((a, b) => parseInt(b.count) - parseInt(a.count)).slice(0, 10);
 
