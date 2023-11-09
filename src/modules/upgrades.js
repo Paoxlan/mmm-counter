@@ -58,7 +58,7 @@ const upgrades = {
         {
             id: 600,
             name: "MMM luck",
-            description: `Get a 15x multiplier bonus by random chance (1%).\n`,
+            description: `Get a 15x multiplier bonus by random chance (1%).`,
             cost: 777,
             requirements: [
                 1,
@@ -72,10 +72,10 @@ const upgrades = {
         {
             id: 900,
             name: "Inner Thoughts",
-            description: `Passively gain 2 mmm coins every 5 seconds.\nWarning: This upgrade will get unequipped if you say "mmm".\n""mmm""`,
+            description: `Passively gain 2 mmm coins every 5 seconds. Cost scales with the amount of mmm coins you have.\nWarning: This upgrade will get unequipped if you say "mmm".\n""mmm""`,
             getUpgradeCost: function (user) {
-                const costScale = user.getMMM() - 1000;
-                return 1000 + Math.ceil(costScale > 0 ? costScale / 100 * 25 : 0);
+                const costScale = user.getMMM() - 1500;
+                return 1000 + Math.ceil(costScale > 0 ? costScale / 100 * 5 : 0);
             },
             hasSpoken: false,
             hasOnEquip: true,
