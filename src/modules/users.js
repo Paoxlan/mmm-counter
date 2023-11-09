@@ -11,7 +11,6 @@ module.exports = {
             const users = Users.getUsersJSON();
 
             const user = users.find(user => user.user_id === this.user_id);
-            user.rank = this.rank;
             user.count = this.count;
             user.mmms = this.mmms;
             user.upgrades = this.upgrades;
@@ -20,17 +19,9 @@ module.exports = {
         }
 
         getUserId = () => this.user_id;
-        getRank = () => this.rank;
         getCount = () => this.count;
         getMMM = () => Math.round(this.mmms);
         getUpgrades = () => this.upgrades;
-
-        setRank(rank) {
-            this.rank = rank;
-            this.saveToJSON();
-
-            return this;
-        }
 
         setMMM(mmms) {
             this.mmms = mmms;
@@ -92,7 +83,6 @@ module.exports = {
 
             const user = {
                 user_id: id,
-                rank: 1,
                 count: 1,
                 mmms: 1,
                 upgrades: []
