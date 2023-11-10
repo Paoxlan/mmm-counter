@@ -52,7 +52,7 @@ module.exports = {
             user.setCount(user.getCount() + applyUpgrades(user, 'count'));
             user.setMMM(user.getMMM() + applyUpgrades(user, 'mmm'));
 
-            messageContent += `${message.author.displayName} has said "mmm" ${user.getCount()} times! You have ${user.getMMM()} mmms.`;
+            messageContent += `${message.author.displayName} has said "mmm" ${user.getCount()} times! You have ${user.getMMM()} mmm coins.`;
 
             message.reply(messageContent);
         }
