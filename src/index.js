@@ -39,7 +39,7 @@ client.on(Events.InteractionCreate, async function (interaction) {
 	const filePath = path.join(commandsPath, fileName);
 
 	const command = require(filePath);
-	command.execute(interaction);
+	command.execute(interaction, client);
 });
 
 client.on(Events.MessageCreate, async function (message) {
