@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('top')
         .setDescription('Shows a list of the top 10 users.'),
-    async execute(interaction) {
+    async execute(interaction, client) {
         const embed = createEmbed(interaction.user);
 
         const userArray = Users.getUsersJSON();
@@ -17,10 +17,14 @@ module.exports = {
         const sortedUserArray = userArray.sort((a, b) => parseInt(b.count) - parseInt(a.count)).slice(0, 10);
 
         let description = '';
-
         for (let i = 0; i < sortedUserArray.length; i++) {
             const user = sortedUserArray[i];
-            description += `${i + 1}# <@${user.user_id}> - ${user.count} mmm's\n`;
+            const userObject = await client.users.fetch(user.user_id)
+                .catch(() => { return { globalName: 'Unknown' }});
+
+            console.log(userObject);
+
+            description += `${i + 1}# <@${user.user_id}> | ${userObject.globalName}: ${user.count} mmm's\n`;
         }
 
         embed.setTitle('mmm Leaderboard:');
