@@ -38,7 +38,7 @@ module.exports = {
 
             if (!user) {
                 Users.createUser(userId);
-                message.reply('${message.author.displayName} has said "mmm" for the first time!');
+                message.reply(`${message.author.displayName} has said "mmm" for the first time!`);
                 return;
             }
 
