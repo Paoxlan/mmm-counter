@@ -23,7 +23,3 @@ Contributions are welcome, but don't expect me to react quickly as this project 
 2. run `npm install`
 3. (optional) Create a `.env` file and add your bot token to it. (see `.env.example`)
 4. (optional) start the bot with `npm run dev` or `node src/index.js`
-
-## npm scripts
-- `npm run dev` - the same as `node src/index.js`
-- `npm run slashcommands` - registers the slash commands. (only works if you have a `.env` file with a bot token and a bot client id)
