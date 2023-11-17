@@ -1,5 +1,4 @@
-const { SlashCommandBuilder, ComponentType, ButtonBuilder, ButtonStyle, ActionRowBuilder, ActionRow } = require('discord.js');
-const { MMM } = require('../modules/mmm.js');
+const { SlashCommandBuilder, ComponentType, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { Upgrades } = require('../modules/upgrades.js');
 const { Users } = require('../modules/users.js');
 const { createEmbed } = require('../modules/embedTemplate.js');
