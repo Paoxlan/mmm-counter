@@ -78,7 +78,6 @@ function createShopEmbed(embed, index, upgrades, user, content = '') {
         embed.addFields({ name: 'Next Upgrade', value: `${nextUpgrade.name}`, inline: true });
 
     const components = updateComponents(index, upgrades, user);
-    console.log(components);
     
     return { embed: [embed], components: components ? [components] : [], index: index };
 }
