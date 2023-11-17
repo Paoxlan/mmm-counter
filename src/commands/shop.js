@@ -46,7 +46,7 @@ function updateComponents(index, upgrades, user) {
     rightButton.setDisabled(false);
 
     user = Users.getUser(user.getUserId()); // Refresh user
-    if (!upgrades[index]) return new ActionRowBuilder().addComponents([leftButton.setDisabled(true), payButton.setDisabled(true), rightButton.setDisabled(true)]);
+    if (!upgrades[index]) return null;
 
     const upgrade = Upgrades.getUpgrade(upgrades[index].id);
 
@@ -67,7 +67,7 @@ function createShopEmbed(embed, index, upgrades, user, content = '') {
     embed.setTitle(upgrade ? upgrade.name : 'Shop');
     if (upgrade) embed.setDescription(`${upgrade.getDescription()}\n\nCost: ${upgrade.getCost(user)}\nYou have: ${user.getMMM()} mmms${content ? `\n\n${content}` : ''}`);
     else {
-        embed.setDescription('You have all upgrades!')
+        embed.setDescription('You have all the upgrades!')
         if (previousUpgrade) return createShopEmbed(embed, index - 1, upgrades, user, content);
     }
 
@@ -77,7 +77,10 @@ function createShopEmbed(embed, index, upgrades, user, content = '') {
     if (nextUpgrade)
         embed.addFields({ name: 'Next Upgrade', value: `${nextUpgrade.name}`, inline: true });
 
-    return { embed: [embed], components: [updateComponents(index, upgrades, user)], index: index };
+    const components = updateComponents(index, upgrades, user);
+    console.log(components);
+    
+    return { embed: [embed], components: components ? [components] : [], index: index };
 }
 
 function shopListEmbed(embed, user, availableUpgrades, upgrades) {
