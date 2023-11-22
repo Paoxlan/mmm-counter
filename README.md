@@ -8,13 +8,10 @@ This bot uses discord.js.
 - You can purchase upgrades with the `/shop` command to boost your productivity.
 - mmm coins are earned by the same way as mmm count, but you can also get them passively from upgrades.
 
-## Invite
-- [The Discord bot](https://discord.com/api/oauth2/authorize?client_id=1161609471307558933&permissions=67584&scope=bot)
-
 ---
 
 ## Contributing
-Contributions are welcome, but don't expect me to react quickly as this project was made as a joke and I don't plan on working on it much.
+I dropped support on this repository. If you wish to contribute you can, but don't expect me to react quickly as this project was made as a joke and the fact I dropped support as stated.
 
 **New features need to be discussed in an issue first. Bug fixes can be done without an issue.**
 
